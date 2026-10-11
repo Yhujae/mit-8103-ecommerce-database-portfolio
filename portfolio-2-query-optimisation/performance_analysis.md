@@ -34,3 +34,13 @@ The experiment demonstrates how an index can change PostgreSQL's execution plan 
 - SQL command used to create the index.
 - Execution plan after indexing.
 - SQL query used for both measurements.
+
+## Statistics and Query Planning
+
+The PostgreSQL `ANALYZE` command was executed on `orders_performance_test` to refresh the table statistics used by the query planner.
+
+After the index had been created, PostgreSQL estimated 1,000 matching rows, which agreed with the 1,000 rows actually returned. Following `ANALYZE`, the estimated and actual row counts remained 1,000.
+
+The measured execution time after `ANALYZE` was 2.346 ms, compared with 2.358 ms in the preceding run. This small difference does not establish a meaningful performance improvement. It demonstrates why repeated measurements are preferable to drawing conclusions from individual runs.
+
+The experiment illustrates the role of planner statistics in estimating query results and choosing execution plans. The query continued to use a bitmap index scan followed by a bitmap heap scan.
